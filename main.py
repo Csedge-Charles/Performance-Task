@@ -20,10 +20,9 @@ def prime_factor(num):
     while num != 1:
         for i in total_primes:
             if num % i == 0:
-                num = num % i
+                num = num / i
                 factors.append(i)
                 break
-    factors.append(num)
     return factors
 
-print(prime_factor(20))
+print(prime_factor(180))
