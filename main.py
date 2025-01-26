@@ -90,36 +90,46 @@ def lcm(num_1, num_2):
         factor1 = compress(prime_factor(num_1))[1]
         factor2 = compress(prime_factor(num_2))[1]
         
-        if len(count1) <= len(count2):
-            n = len(count1)
-            for i in range(n):
-                if factor1[i] not in factor2:
+        if len(count1) > len(count2):
+            count1 = count2
+            count2 = count1
+            factor1 = factor2
+            factor2 = factor1
+        for i in range(len(count1)):
+            if factor1[i] not in factor2:
+                lcm_list.append(factor1[i] ** count1[i])
+            else:
+                if count1[i] <= count2[getElement(factor2, factor1[i])]:
+                    lcm_list.append(factor1[i] ** count2[getElement(factor2, factor1[i])]) 
+                else:
                     lcm_list.append(factor1[i] ** count1[i])
-                else:
-                    if count1[i] <= count2[getElement(factor2, factor1[i])]:
-                        lcm_list.append(factor1[i] ** count2[getElement(factor2, factor1[i])]) 
-                    else:
-                        lcm_list.append(factor1[i] ** count1[i])
-            for i in range(len(factor2)):
-                if factor2[i] not in lcm_list and factor2[i] not in factor1:
-                    lcm_list.append(factor2[i])
-            return multiply(lcm_list)
-        else:
-            n = len(count2)
-            for i in range(n):
-                if factor2[i] not in factor1:
-                    lcm_list.append(factor2[i] ** count2[i])
-                else:
-                    if count2[i] <= count1[getElement(factor1, factor2[i])]:
-                        lcm_list.append(factor2[i] ** count1[getElement(factor1, factor2[i])]) 
-                    else:
-                        lcm_list.append(factor2[i] ** count2[i])
-            for i in range(len(factor1)):
-                if factor1[i] not in lcm_list and factor1[i] not in factor2:
-                    lcm_list.append(factor1[i])
-            return multiply(lcm_list)
+        for i in range(len(factor2)):
+            if factor2[i] not in lcm_list and factor2[i] not in factor1:
+                lcm_list.append(factor2[i])
+        return multiply(lcm_list)
 
-print(lcm(70, 30))
+
+def gcf(num_1, num_2):
+    lcm_list = []
+    count1 = compress(prime_factor(num_1))[0]
+    count2 = compress(prime_factor(num_2))[0]
+    factor1 = compress(prime_factor(num_1))[1]
+    factor2 = compress(prime_factor(num_2))[1]
+    
+    if len(count1) > len(count2):
+        count1 = count2
+        count2 = count1
+        factor1 = factor2
+        factor2 = factor1
+    for i in range(len(count1)):
+        if factor1[i] in factor2:
+            if count1[i] <= count2[getElement(factor2, factor1[i])]:
+                lcm_list.append(factor1[i] ** count1[i]) 
+            else:
+                lcm_list.append(factor1[i] ** count2[getElement(factor2, factor1[i])])
+    return multiply(lcm_list)
+
+print(gcf(21928, 3192))
                 
     
         
