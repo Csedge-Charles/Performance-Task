@@ -1,21 +1,23 @@
 def round_up(num):
+    #Rounds up a number, ex) 3.2 -> 4
     if num - int(num) == 0:
         return num
     else:
-        return int(num) + 1
+        return int(num + 1)
 
 
 def prime(num):
+    #If a number is prime, return True, else return False
     if num < 1:
         return False
-    elif num - int(num) != 0:
+    elif num - int(num) != 0: #Decimals are False
         return False
     elif num == 1:
         return False
     elif num == 2:
         return True
     else:
-        for i in range(2, int(round_up((num) ** 0.5))):
+        for i in range(2, num):
             if num % i == 0:
                 return False
     return True
@@ -26,11 +28,10 @@ def prime(num):
 def prime_numbers(num):
     #Lists all of the prime numbers from 1 to num
     primes = [2]
-    for i in range(3, num):
+    for i in range(3, num + 1):
         if prime(i):
             primes.append(i)
-    return(primes)
-
+    return primes
 
 
 def prime_factor(num):
@@ -64,13 +65,16 @@ def compress(factors):
             count_list.append(count)
             count = 0
         iterator += 1
-    return [count_list, new_list]
+    return [new_list, count_list]
 
 def multiply(factors):
-    num = 1
-    for i in factors:
-        num *= i
-    return num
+    if len(factors) == 0:
+        return 1
+    else:
+        num = 1
+        for i in factors:
+            num *= i
+        return num
 
 def getElement(list_1, element):
     x = 0
@@ -80,56 +84,47 @@ def getElement(list_1, element):
         x += 1
     return False
 
-def lcm(num_1, num_2):
-    if prime(num_1) or prime(num_2):
-        return num_1 * num_2
-    else: 
-        lcm_list = []
-        count1 = compress(prime_factor(num_1))[0]
-        count2 = compress(prime_factor(num_2))[0]
-        factor1 = compress(prime_factor(num_1))[1]
-        factor2 = compress(prime_factor(num_2))[1]
-        
-        if len(count1) > len(count2):
-            count1 = count2
-            count2 = count1
-            factor1 = factor2
-            factor2 = factor1
-        for i in range(len(count1)):
-            if factor1[i] not in factor2:
-                lcm_list.append(factor1[i] ** count1[i])
-            else:
-                if count1[i] <= count2[getElement(factor2, factor1[i])]:
-                    lcm_list.append(factor1[i] ** count2[getElement(factor2, factor1[i])]) 
-                else:
-                    lcm_list.append(factor1[i] ** count1[i])
-        for i in range(len(factor2)):
-            if factor2[i] not in lcm_list and factor2[i] not in factor1:
-                lcm_list.append(factor2[i])
-        return multiply(lcm_list)
-
-
-def gcf(num_1, num_2):
-    lcm_list = []
-    count1 = compress(prime_factor(num_1))[0]
-    count2 = compress(prime_factor(num_2))[0]
-    factor1 = compress(prime_factor(num_1))[1]
-    factor2 = compress(prime_factor(num_2))[1]
+def lcm(num1, num2):
+    num1_data = compress(prime_factor(num1))
+    num2_data = compress(prime_factor(num2))
+    factor1_dic = {}
+    factor2_dic = {}
+    num = 1
+    for i in range(len(num1_data[0])):
+        factor1_dic[num1_data[0][i]] = num1_data[1][i]
+    for i in range(len(num2_data[0])):
+        factor2_dic[num2_data[0][i]] = num2_data[1][i]  
     
-    if len(count1) > len(count2):
-        count1 = count2
-        count2 = count1
-        factor1 = factor2
-        factor2 = factor1
-    for i in range(len(count1)):
-        if factor1[i] in factor2:
-            if count1[i] <= count2[getElement(factor2, factor1[i])]:
-                lcm_list.append(factor1[i] ** count1[i]) 
+    for i in num1_data[0]:
+        if i in factor2_dic:
+            if factor1_dic[i] > factor2_dic[i]:
+                num *= i ** factor1_dic[i]
             else:
-                lcm_list.append(factor1[i] ** count2[getElement(factor2, factor1[i])])
-    return multiply(lcm_list)
+                num *= i ** factor2_dic[i]
+        else:
+            num *= i ** factor1_dic[i]
+    for i in num2_data[0]:
+        if i not in factor1_dic:
+            num *= i ** factor2_dic[i]
+    return num
 
-print(gcf(21928, 3192))
+
+def gcf(num1, num2):
+    num1_data = compress(prime_factor(num1))
+    num2_data = compress(prime_factor(num2))
+    factor1_dic = {}
+    factor2_dic = {}
+    num = 1
+    for i in range(len(num1_data[0])):
+        factor1_dic[num1_data[0][i]] = num1_data[1][i]
+    for i in range(len(num2_data[0])):
+        factor2_dic[num2_data[0][i]] = num2_data[1][i]    
+    for i in num1_data[0]:
+        if i in factor2_dic:
+            if factor1_dic[i] < factor2_dic[i]:
+                num *= i ** factor1_dic[i]
+            else:
+                num *= i ** factor2_dic[i]
+    return num
+
                 
-    
-        
