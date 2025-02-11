@@ -67,16 +67,6 @@ def compress(factors):
         iterator += 1
     return [new_list, count_list]
 
-def multiply(factors):
-    if len(factors) == 0:
-        return 1
-    else:
-        num = 1
-        for i in factors:
-            num *= i
-        return num
-
-def getElement(list_1, element):
     x = 0
     for i in list_1:
         if i == element:
