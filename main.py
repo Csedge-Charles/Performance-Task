@@ -1,11 +1,14 @@
 def round_up(num): #Rounds up a number, ex) 3.2 -> 4
+    #input type: float or int
     if num - int(num) == 0:
         return num 
     else:
-        return int(num + 1)
+        return int(num + 1) #return type: int
 
 
 def prime(num): #If a number is prime, return True, else return False
+    #input type: float or int
+    #return type: bool
     if num < 1: #Any number less than one is not prime
         return False
     elif num - int(num) != 0: #Decimals aren't prime
@@ -24,6 +27,7 @@ def prime(num): #If a number is prime, return True, else return False
 
 
 def prime_numbers(num): #Lists all of the prime numbers from 1 to num
+    #input type: float or int
     if num == 1:
         return []
     primes = [2] #starts with 2
@@ -31,9 +35,11 @@ def prime_numbers(num): #Lists all of the prime numbers from 1 to num
         if prime(i): #checks if number is prime
             primes.append(i) #adds number if it is prime
     return primes
+ #return type: list
 
 
 def prime_factor(num): #prime factorizes the number
+    #input type: float or int
     factors = [] #declares list to store primes
     total_primes = prime_numbers(num) #gets the all prime numbers from 1 to num
     while num != 1: #keeps iterating until num isn't divisible
@@ -43,9 +49,13 @@ def prime_factor(num): #prime factorizes the number
                 factors.append(i)
                 break
     return factors
-
-def compress(factors): #Turns a list with duplicates ex) [1, 1, 2, 2] and outputs a single list with two lists inside
-    #first list is the original with no duplicates and the second is how many duplicates are there for each corresponding number in the first list ex) [1, 1, 2, 2] -> [[1, 2], [2, 2]]
+ #return type: list
+ 
+ 
+def compress(factors): #Uses data from prime_factor(num) which may have duplicate elements
+    #first list is the original with no duplicates and the second is how many duplicates there are
+    # ex) [1, 1, 2, 2] -> [[1, 2], [2, 2]]
+    #input type: list
     count_list = [] #list for the number of duplicates
     new_list = [] #list for original without duplicates
     count = 0
@@ -66,8 +76,13 @@ def compress(factors): #Turns a list with duplicates ex) [1, 1, 2, 2] and output
             count = 0 #reset count
         iterator += 1 #iteration increases at the end
     return [new_list, count_list]
+ #return type: list with two sub lists
+ 
 
+print(compress([3, 3, 3, 4, 4, 4, 4]))
+ 
 def lcm(num1, num2): #Finds the least common multiple of two numbers
+    #input type: two ints
     num1_data = compress(prime_factor(num1)) #Gets simplified version and how many duplicates
     num2_data = compress(prime_factor(num2))
     factor1_dic = {} #Dictionary used for displaying {factor: how many duplicates}
@@ -89,10 +104,11 @@ def lcm(num1, num2): #Finds the least common multiple of two numbers
     for i in num2_data[0]: #iterating through unshared factors
         if i not in factor1_dic:
             num *= i ** factor2_dic[i] #include them into the calculation
-    return num
+    return num  #return type: int
 
 
 def gcf(num1, num2):
+    #input type: two ints
     num1_data = compress(prime_factor(num1))
     num2_data = compress(prime_factor(num2))
     factor1_dic = {}
@@ -110,17 +126,17 @@ def gcf(num1, num2):
                 num *= i ** factor1_dic[i] #take the smaller one
             else:
                 num *= i ** factor2_dic[i]
-    return num
+    return num  #return type: int
 
-print("This is a calculator that can find the lcm of gcf of any two positive integers")
-choice = input("LCM or GCF: ")
-number_1 = int(input("First number: "))
-number_2 = int(input("Second number: "))
+# print("This is a calculator that can find the lcm of gcf of any two positive integers")
+# choice = input("LCM or GCF: ")
+# number_1 = int(input("First number: "))
+# number_2 = int(input("Second number: "))
 
-if choice.upper() == "LCM": #ensures that variations of capitalization are included
-    print(lcm(number_1, number_2))
+# if choice.upper() == "LCM": #ensures that variations of capitalization are included
+#     print(lcm(number_1, number_2))
     
-elif choice.upper() == "GCF":
-    print(gcf(number_1, number_2))
-else:
-    print("Opperator not found")
+# elif choice.upper() == "GCF":
+#     print(gcf(number_1, number_2))
+# else:
+#     print("Opperator not found")
